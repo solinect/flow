@@ -1,7 +1,7 @@
 {
     "name": "flow",
     "version": "1.0.0",
-    "main": "src/index.ts",
+    "type": "commonjs",
     "scripts": {
         "start": "ts-node src/index.ts",
         "start:build": "node build/index.js",
@@ -13,16 +13,20 @@
         "type": "git",
         "url": "git+https://github.com/solinect/flow.git"
     },
-    "bin":{
-       "flow": "./build/index.js"
+    "bin": {
+        "flow": "./build/index.js"
     },
     "keywords": [],
     "author": "a.elhaddadi",
     "license": "ISC",
-    "type": "module",
     "bugs": {
         "url": "https://github.com/solinect/flow/issues"
     },
     "homepage": "https://github.com/solinect/flow#readme",
-    "description": ""
+    "description": "",
+    "devDependencies": {
+        "@types/node": "^22.15.3",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.8.3"
+    }
 }
