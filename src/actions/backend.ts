@@ -9,7 +9,7 @@ export const createModules = (opts: Array<IOption>) => {
         if (singleOpts.value) {
             const path = singleOpts.value.split("/");
             const filename = path[path.length - 1];
-            const dir = path.slice(0, path.length - 1).join();
+            const dir = path.slice(0, path.length - 1).join("/");
             if (singleOpts.name === "router" || singleOpts.name === "r") {
                 createRouter(filename, dir);
                 console.log(`Router ${filename} has been created!`);
@@ -29,7 +29,7 @@ export const createModules = (opts: Array<IOption>) => {
         if (moduleOpts.value) {
             const path = moduleOpts.value.split("/");
             const filename = path[path.length - 1];
-            const dir = path.slice(0, path.length - 1).join();
+            const dir = path.slice(0, path.length - 1).join("/");
             console.log(`Creating module: ${filename}`);
             createRouter(filename, dir);
             createController(filename, dir);

@@ -4,10 +4,9 @@
     "type": "commonjs",
     "scripts": {
         "start": "ts-node src/index.ts",
-        "start:build": "node build/index.js",
-        "build": "tsc",
-        "cli": "npm run build && flow",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "build": "tsc && npm run copy-files",
+        "copy-files": "copyfiles -u 1 src/templates/*.txt build/",
+        "cli": "npm run build && flow"
     },
     "repository": {
         "type": "git",
