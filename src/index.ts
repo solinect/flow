@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { createModules } from "./actions/backend";
-import { IOption } from "./Interface/Option";
+import { generateCommand } from "./actions/generate";
 import { Program } from "./parser";
 
 const program = new Program();
@@ -21,12 +21,9 @@ program
     .command({
         name: "generate, g",
         options: [
-            { name: "-k, --keys", description: "Generate encryption keys" },
-            { name: "-e, --env", description: "Generate new .env file" },
+            { name: "keys, k", description: "Generate encryption keys" },
+            { name: "env, e", description: "Generate new .env file" },
         ],
-        action: (options: Array<IOption>) => {
-            console.log(options);
-            console.log("Generate command!");
-        },
+        action: generateCommand,
     });
 program.parse(process.argv);
