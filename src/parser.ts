@@ -27,7 +27,7 @@ export class Program {
             if (check) {
                 // if already exists add this token as value
                 const exists = options.find(() => parserCompare(check.name, tokens[i]));
-                if (exists) {
+                if (exists && !exists.value) {
                     exists.value = tokens[i];
                 }
                 // if not push new option

@@ -1,11 +1,7 @@
 import { Request, Response } from "express";
 
 class {{name}}Controller{
-
-    public static async list(req : Request, res : Response){
-
-    }
-
+{{methods}}
 }
 
 export default {{name}}Controller

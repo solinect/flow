@@ -5,3 +5,9 @@ export function toPascalCase(fileName: string): string {
         .replace(/\s/g, "") // Remove spaces
         .replace(/^\w/, (c) => c.toUpperCase()); // Capitalize the first character
 }
+
+export const parsePath = (path: Array<string>) => {
+    const filename = path[path.length - 1];
+    const dir = path.slice(0, path.length - 1).join("/");
+    return { filename, dir };
+};

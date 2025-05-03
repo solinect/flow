@@ -14,6 +14,7 @@ program
             { name: "module, m", description: "Create new module - directory with router and controller" },
             { name: "router, r", description: "Create new backend router" },
             { name: "controller, c", description: "Create new backend controller" },
+            { name: "--methods, -m", description: "Added methods to controller - must be separated with commas ','" },
         ],
         action: createModules,
     })

@@ -1,20 +1,21 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { IOption } from "../Interface/Option";
-import { toPascalCase } from "../utils/formmat";
+import { parsePath, toPascalCase } from "../utils/format";
 
 export const createModules = (opts: Array<IOption>) => {
+    const methodsOpts = opts.find((o) => o.name === "--methods" || o.name === "-m");
+    const methods = methodsOpts ? methodsOpts.value.split(",").map((m) => m.trim()) : ["list"];
+
     // router or controller
     const singleOpts = opts.find((o) => o.name === "router" || o.name === "r" || o.name === "controller" || o.name === "c");
     if (singleOpts) {
         if (singleOpts.value) {
-            const path = singleOpts.value.split("/");
-            const filename = path[path.length - 1];
-            const dir = path.slice(0, path.length - 1).join("/");
+            const { filename, dir } = parsePath(singleOpts.value.split("/"));
             if (singleOpts.name === "router" || singleOpts.name === "r") {
                 createRouter(filename, dir);
                 console.log(`Router ${filename} has been created!`);
             } else if (singleOpts.name === "controller" || singleOpts.name === "c") {
-                createController(filename, dir);
+                createController(filename, dir, methods);
                 console.log(`Controller ${filename} has been created!`);
             }
         } else {
@@ -27,12 +28,10 @@ export const createModules = (opts: Array<IOption>) => {
     const moduleOpts = opts.find((o) => o.name === "module" || o.name === "m");
     if (moduleOpts) {
         if (moduleOpts.value) {
-            const path = moduleOpts.value.split("/");
-            const filename = path[path.length - 1];
-            const dir = path.slice(0, path.length - 1).join("/");
+            const { filename, dir } = parsePath(moduleOpts.value.split("/"));
             console.log(`Creating module: ${filename}`);
-            createRouter(filename, dir);
-            createController(filename, dir);
+            createRouter(filename, dir, true);
+            createController(filename, dir, methods);
             console.log(`Module ${filename} has been created!`);
         } else {
             console.log("Module name must be provided!");
@@ -41,9 +40,17 @@ export const createModules = (opts: Array<IOption>) => {
     }
 };
 
-const createController = (name: string, dir: string | undefined) => {
+const createController = (name: string, dir: string | undefined, methodNames: string[] = ["list"]) => {
     let content = readFileSync(`${__dirname}/../templates/controller.txt`, "utf8");
-    content = content.replace(new RegExp("{{name}}", "g"), toPascalCase(name));
+    let methodContent = readFileSync(`${__dirname}/../templates/method.txt`, "utf8");
+    const nameReg = new RegExp("{{name}}", "g");
+    const methodsReg = new RegExp("{{methods}}", "g");
+
+    // create methods to include in the controller
+    const methods = methodNames.map((m) => methodContent.replace(nameReg, m));
+    methods.unshift("\t");
+    content = content.replace(nameReg, toPascalCase(name));
+    content = content.replace(methodsReg, methods.join("\n\t"));
     if (dir) {
         if (!existsSync(dir)) {
             mkdirSync(dir, { recursive: true });
