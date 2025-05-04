@@ -14,7 +14,9 @@ program
             { name: "module, m", description: "Create new module - directory with router and controller" },
             { name: "router, r", description: "Create new backend router" },
             { name: "controller, c", description: "Create new backend controller" },
-            { name: "--methods, -m", description: "Added methods to controller - must be separated with commas ','" },
+            { name: "--methods, -m", description: "Add methods to controller - must be separated with commas ','" },
+            { name: "middleware, mi", description: "Create an empty middleware" },
+            { name: "--multer", description: "if added on middleware creation command will create a multer upload middleware" },
         ],
         action: createModules,
     })

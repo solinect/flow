@@ -38,6 +38,20 @@ export const createModules = (opts: Array<IOption>) => {
             return;
         }
     }
+
+    //middleware
+    const middlewareOpts = opts.find((o) => o.name === "midleware" || o.name === "mi");
+    if (middlewareOpts) {
+        if (middlewareOpts.value) {
+            const multerOpts = opts.find((o) => o.name === "--multer");
+            const { filename, dir } = parsePath(middlewareOpts.value.split("/"));
+            createMiddleware(filename, dir, multerOpts ? "multer" : "empty");
+            console.log(`Middleware ${multerOpts ? "multer upload" : filename} has been created!`);
+        } else {
+            console.log("Module name must be provided!");
+            return;
+        }
+    }
 };
 
 const createController = (name: string, dir: string | undefined, methodNames: string[] = ["list"]) => {
@@ -69,4 +83,15 @@ const createRouter = (name: string, dir: string | undefined, controller: boolean
         }
     }
     writeFileSync(`${dir ?? "."}/${name}.router.ts`, content);
+};
+
+const createMiddleware = (name: string, dir: string, type: "empty" | "multer" = "empty") => {
+    let content = readFileSync(`${__dirname}/../templates/middleware/${type}.txt`, "utf8");
+    content = content.replace(new RegExp("{{name}}", "g"), toPascalCase(name));
+    if (dir) {
+        if (!existsSync(dir)) {
+            mkdirSync(dir, { recursive: true });
+        }
+    }
+    writeFileSync(`${dir ?? "."}/${name}.middleware.ts`, content);
 };
