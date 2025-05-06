@@ -11,3 +11,22 @@ export const parsePath = (path: Array<string>) => {
     const dir = path.slice(0, path.length - 1).join("/");
     return { filename, dir };
 };
+
+export function toSqlTableName(name: string): string {
+    // Replace hyphens with underscores
+    let tableName = name.replace(/-/g, "_");
+
+    // Convert to lowercase
+    tableName = tableName.toLowerCase();
+
+    // Naive pluralization
+    if (tableName.endsWith("y") && !/[aeiou]y$/.test(tableName)) {
+        tableName = tableName.slice(0, -1) + "ies";
+    } else if (tableName.endsWith("s") || tableName.endsWith("x") || tableName.endsWith("z") || tableName.endsWith("ch") || tableName.endsWith("sh")) {
+        tableName += "es";
+    } else {
+        tableName += "s";
+    }
+
+    return tableName;
+}

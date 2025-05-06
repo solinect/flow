@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { IOption } from "../Interface/Option";
-import { parsePath, toPascalCase } from "../utils/format";
+import { parsePath, toPascalCase, toSqlTableName } from "../utils/format";
 
 export const createModules = (opts: Array<IOption>) => {
     const methodsOpts = opts.find((o) => o.name === "--methods" || o.name === "-m");
@@ -52,6 +52,19 @@ export const createModules = (opts: Array<IOption>) => {
             return;
         }
     }
+
+    //entity
+    const entityOpts = opts.find((o) => o.name === "entity" || o.name === "e");
+    if (entityOpts) {
+        if (entityOpts.value) {
+            const { filename, dir } = parsePath(entityOpts.value.split("/"));
+            createEntity(filename, dir);
+            console.log(`Entity ${filename} has been created!`);
+        } else {
+            console.log("Entity name must be provided!");
+            return;
+        }
+    }
 };
 
 const createController = (name: string, dir: string | undefined, methodNames: string[] = ["list"]) => {
@@ -94,4 +107,16 @@ const createMiddleware = (name: string, dir: string, type: "empty" | "multer" = 
         }
     }
     writeFileSync(`${dir ?? "."}/${name}.middleware.ts`, content);
+};
+
+const createEntity = (name: string, dir: string) => {
+    let content = readFileSync(`${__dirname}/../templates/entity.txt`, "utf8");
+    content = content.replace(new RegExp("{{table_name}}", "g"), toSqlTableName(name).toLowerCase());
+    content = content.replace(new RegExp("{{name}}", "g"), toPascalCase(name));
+    if (dir) {
+        if (!existsSync(dir)) {
+            mkdirSync(dir, { recursive: true });
+        }
+    }
+    writeFileSync(`${dir ?? "."}/${toPascalCase(name)}.ts`, content);
 };

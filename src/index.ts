@@ -17,6 +17,7 @@ program
             { name: "--methods, -m", description: "Add methods to controller - must be separated with commas ','" },
             { name: "middleware, mi", description: "Create an empty middleware" },
             { name: "--multer", description: "if added on middleware creation command will create a multer upload middleware" },
+            { name: "entity, e", description: "Create new entity" },
         ],
         action: createModules,
     })
