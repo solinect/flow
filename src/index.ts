@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { createModules } from "./actions/backend";
+import { dbCommand } from "./actions/database";
 import { generateCommand } from "./actions/generate";
 import { Program } from "./parser";
 
@@ -28,5 +29,13 @@ program
             { name: "env, e", description: "Generate new .env file" },
         ],
         action: generateCommand,
+    })
+    .command({
+        name: "database, db",
+        options: [
+            { name: "seed", description: "Seed database with data based on project's seed files" },
+            { name: "--create", description: "Add tag to the end of db seed command to Create seeder file(s)" },
+        ],
+        action: dbCommand,
     });
 program.parse(process.argv);

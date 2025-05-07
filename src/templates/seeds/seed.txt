@@ -1,0 +1,11 @@
+import { Seeder } from "./Seeder";
+
+class {{name}} extends Seeder {
+
+    // fnction executed on db seed
+    run(): void {
+
+    }
+}
+
+export default {{name}};

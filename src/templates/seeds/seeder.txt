@@ -1,0 +1,84 @@
+import { readdirSync } from "fs";
+import path from "path";
+import { AppDataSource } from "../data-source";
+
+export class Seeder {
+    run(): void | Promise<void> {}
+    private static seedsDir = path.resolve(__dirname);
+
+    // run the given seed class
+    public static async call<S extends Seeder>(...Seeds: Array<new () => S>) {
+        for (const Seed of Seeds) {
+            const seed = new Seed();
+            await seed.run();
+        }
+    }
+
+    private static retrieveSeeds() {
+        try {
+            const files = readdirSync(this.seedsDir).filter((file) => file.endsWith(".seed.ts") || file.endsWith(".seed.js"));
+
+            if (files.length === 0) {
+                console.log(`No seed file as been detected!`);
+                return [];
+            }
+            return files;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
+    private static async getFileModule(file: string) {
+        const fullPath = path.join(this.seedsDir, file);
+        const SeedModule = await import(fullPath);
+        const SeedClass = SeedModule.default;
+
+        if (typeof SeedClass === "function") {
+            return SeedClass;
+        }
+        return null;
+    }
+
+    public static async callAll() {
+        const files = this.retrieveSeeds();
+        if (!AppDataSource.isInitialized) await AppDataSource.initialize();
+        for (const file of files) {
+            const SeedClass = await this.getFileModule(file);
+            if (SeedClass) {
+                try {
+                    console.log(`🌱 Running: ${file}`);
+                    await this.call(SeedClass);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        }
+        await AppDataSource.destroy();
+    }
+
+    public static async callOne(name: string) {
+        const files = this.retrieveSeeds();
+        const file = files.find((o) => o.startsWith(name));
+        if (!AppDataSource.isInitialized) {
+            await AppDataSource.initialize();
+        }
+        if (file) {
+            const SeedClass = await this.getFileModule(file);
+            if (SeedClass) {
+                try {
+                    console.log(`🌱 Running: ${file}`);
+                    await this.call(SeedClass);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        } else {
+            console.log(`Seed file with name: ${name} not found!`);
+            return;
+        }
+        await AppDataSource.destroy();
+    }
+}
+
+export default Seeder;
