@@ -50,11 +50,11 @@ export class Program {
         };
         this.commands.forEach((command) => {
             const coName = command.name.split(",").map((n) => n.trim());
-            console.log(`\t ${coName[0]} ${coName.length > 1 ? `[alias: ${coName[1]}]` : ""} :`);
+            console.log(`\n\t ${coName[0]} ${coName.length > 1 ? `[alias: ${coName[1]}]` : ""} :`);
 
             command.options.forEach((option) => {
                 const opName = option.name.split(",").map((n) => n.trim());
-                console.log(`\t\t ${pad(`${opName[0]} ${opName.length > 1 ? `[alias: ${opName[1]}]` : ""}`, colWidths.command * 2)}   ${pad(option.description ?? "", colWidths.description)}`);
+                console.log(`\t\t${opName[0][0] === "-" ? "\t" : ""}${pad(`${opName[0]} ${opName.length > 1 ? `[alias: ${opName[1]}]` : ""}`, opName[0][0] === "-" ? colWidths.command * 3 - 8 : colWidths.command * 3)}   ${pad(option.description ?? "", colWidths.description)}`);
             });
         });
     }
