@@ -1,6 +1,6 @@
 # Flow
 
-**Flow** is a developer productivity CLI built to automate common backend tasks in Node.js + Express + TypeScript projects. It helps you scaffold modules, manage entities, seed your database, and more — all from the command line.
+**Flow** is our developer productivity CLI built to automate our common backend tasks in Node.js + Express + TypeScript projects. It helps you scaffold modules, manage entities, seed your database, and more — all from the command line.
 
 ---
 
@@ -27,29 +27,31 @@ npm link
 
 ---
 
+## 🧪 Commands
+
 ### Create Module - alias: flow c m <name>
-Description: Create a new module (controller + router in a directory)
+Create a new module (controller + router in a directory)
 
 ```bash
 flow create module <name>
 ```
 
-### Create Module - alias: flow c r <name>
-Description: Create a new router
+### Create Router - alias: flow c r <name>
+Create a new router
 
 ```bash
 flow create router <name>
 ```
 
-### Create Module - alias: flow c c <name>
-Description: Create a new controller
+### Create Controller - alias: flow c c <name>
+reate a new controller
 
 ```bash
 flow create controller <name> --methods list,store,update,destroy
 ```
 
 ### Create Middleware – alias: flow c mi <name>
-Description: Create an empty middleware
+Create an empty middleware
 
 ```bash
 flow create middleware <name>
@@ -57,7 +59,7 @@ flow create middleware <name>
 
 
 ### Create Multer Middleware – alias: flow c mi <name> --multer
-Description: Create a file upload middleware using Multer
+Create a file upload middleware using Multer
 
 ```bash
 flow create middleware upload --multer
@@ -65,28 +67,28 @@ flow create middleware upload --multer
 
 
 ### Create Entity – alias: flow c e <name>
-Description: Create a new TypeORM entity
+Create a new TypeORM entity
 
 ```bash
 flow create entity user
 ```
 
 ### Generate Keys – alias: flow g k
-Description: Generate encryption key pairs
+Generate encryption key pairs
 
 ```bash
 flow generate keys
 ```
 
 ### Generate .env File – alias: flow g e
-Description: Generate .env and .env.example files (with empty values)
+Generate .env and .env.example files (with empty values)
 
 ```bash
 flow generate env
 ```
 
 ### Seed Database – alias: flow db seed
-Description: Seed the database using project seeders, runs all seeds if name not specified
+Seed the database using project seeders, runs all seeds if name not specified
 
 ```bash
 flow database seed <name>
@@ -94,15 +96,8 @@ flow database seed <name>
 
 
 ### Create Seed File – alias: flow db seed --create
-Description: Create a new seed file stub in the project
+Create a new seed file stub in the project
 
 ```bash
 flow database seed <name> --create
-```
-
-### Create Seed File – alias: flow db seed --create
-Description: Create a new seed file stub in the project
-
-```bash
-flow database seed
 ```
