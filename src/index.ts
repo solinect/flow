@@ -3,6 +3,7 @@
 import { createModules } from "./actions/backend";
 import { dbCommand } from "./actions/database";
 import { generateCommand } from "./actions/generate";
+import { newCommand } from "./actions/new";
 import { Program } from "./parser";
 
 const program = new Program();
@@ -37,5 +38,10 @@ program
             { name: "--create", description: "Add tag to the end of db seed command to Create seeder file(s)" },
         ],
         action: dbCommand,
+    })
+    .command({
+        name: "new, n",
+        options: [{ name: "server, s", description: "Create new backend project" }],
+        action: newCommand,
     });
 program.parse(process.argv);
